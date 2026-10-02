@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajedrez | Juego</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="header">
+    <div>
+        <h1>♟️ AJEDREZ</h1>
+        <p>Juego de ajedrez</p>
+    </div>
+</header>
+
+<main class="contenedor">
+
+    <section class="panel">
+        <h2>Elegí el modo de juego</h2>
+
+        <div class="modos">
+            <button id="btnDosJugadores" class="modo activo">
+                👥 2 Jugadores
+            </button>
+
+            <button id="btnMaquina" class="modo">
+                🤖 Contra la máquina
+            </button>
+        </div>
+
+        <div class="informacion">
+            <div>
+                <span>Turno</span>
+                <strong id="turno">Blancas</strong>
+            </div>
+
+            <div>
+                <span>Modo</span>
+                <strong id="modoActual">2 Jugadores</strong>
+            </div>
+        </div>
+    </section>
+
+    <section class="juego">
+
+        <div class="jugador jugador-negro">
+            <span>♟ Negras</span>
+            <span id="capturadasNegras"></span>
+        </div>
+
+        <div id="tablero" class="tablero"></div>
+
+        <div class="jugador jugador-blanco">
+            <span>♙ Blancas</span>
+            <span id="capturadasBlancas"></span>
+        </div>
+
+    </section>
+
+    <section class="controles">
+        <button id="btnReiniciar" class="btn reiniciar">
+            🔄 Reiniciar partida
+        </button>
+
+        <div id="mensaje" class="mensaje">
+            Seleccioná una pieza para comenzar.
+        </div>
+    </section>
+
+    <section class="reglas">
+        <h2>¿Cómo jugar?</h2>
+
+        <div class="reglas-grid">
+
+            <article>
+                <span>♟</span>
+                <h3>Seleccioná</h3>
+                <p>Hacé clic sobre una pieza de tu color.</p>
+            </article>
+
+            <article>
+                <span>🎯</span>
+                <h3>Mové</h3>
+                <p>Las casillas posibles aparecerán marcadas.</p>
+            </article>
+
+            <article>
+                <span>⚔️</span>
+                <h3>Capturá</h3>
+                <p>Podés capturar piezas del jugador contrario.</p>
+            </article>
+
+            <article>
+                <span>👑</span>
+                <h3>Jaque</h3>
+                <p>El rey amenazado se marcará en rojo.</p>
+            </article>
+
+        </div>
+    </section>
+
+</main>
+
+<footer>
+    <p>♟️ Ajedrez Web · HTML, CSS y JavaScript</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,475 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --verde-oscuro: #10241b;
+    --verde: #276749;
+    --verde-claro: #4f8f68;
+
+    --marron: #b58863;
+    --marron-claro: #f0d9b5;
+
+    --blanco: #ffffff;
+    --negro: #111111;
+
+    --fondo: #0d1713;
+    --panel: #17231e;
+
+    --amarillo: #ffd54a;
+    --rojo: #e53935;
+
+    --sombra: 0 15px 40px rgba(0, 0, 0, 0.4);
+}
+
+body {
+    min-height: 100vh;
+    font-family: Arial, Helvetica, sans-serif;
+    background:
+        radial-gradient(circle at top, #254d38, transparent 45%),
+        var(--fondo);
+    color: white;
+}
+
+.header {
+    padding: 25px 20px;
+    text-align: center;
+    background: rgba(10, 20, 15, 0.9);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.header h1 {
+    font-size: 2.5rem;
+    letter-spacing: 3px;
+}
+
+.header p {
+    margin-top: 5px;
+    color: #b9c7bf;
+}
+
+.contenedor {
+    width: min(1100px, 94%);
+    margin: 30px auto;
+}
+
+.panel {
+    background: var(--panel);
+    padding: 25px;
+    border-radius: 20px;
+    box-shadow: var(--sombra);
+    margin-bottom: 30px;
+}
+
+.panel h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.modos {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.modo {
+    border: 2px solid #355444;
+    background: #1e3027;
+    color: white;
+    padding: 13px 22px;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+.modo:hover {
+    transform: translateY(-2px);
+    background: #294536;
+}
+
+.modo.activo {
+    background: var(--verde);
+    border-color: #65b484;
+}
+
+.informacion {
+    display: flex;
+    justify-content: center;
+    gap: 80px;
+    margin-top: 25px;
+    text-align: center;
+}
+
+.informacion div {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.informacion span {
+    color: #aab9b0;
+    font-size: 0.85rem;
+}
+
+.juego {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.jugador {
+    width: min(94vw, 850px);
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 18px;
+    background: var(--panel);
+    border-radius: 12px;
+    font-weight: bold;
+}
+
+.tablero {
+    width: min(94vw, 850px);
+    aspect-ratio: 1 / 1;
+
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: repeat(8, 1fr);
+
+    border: 8px solid #493321;
+    border-radius: 8px;
+    box-shadow: var(--sombra);
+    overflow: hidden;
+}
+
+.casilla {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: clamp(2rem, 8vw, 5.2rem);
+    cursor: pointer;
+    user-select: none;
+    transition: filter 0.15s;
+    min-width: 0;
+    min-height: 0;
+}
+
+.casilla.clara {
+    background: var(--marron-claro);
+}
+
+.casilla.oscura {
+    background: var(--marron);
+}
+
+.casilla:hover {
+    filter: brightness(1.08);
+}
+
+/* Las piezas usan una misma silueta sólida.
+   El color CSS decide si son blancas o negras. */
+.pieza {
+    position: relative;
+    z-index: 5;
+    line-height: 1;
+    font-family:
+        "DejaVu Sans",
+        "Segoe UI Symbol",
+        "Arial Unicode MS",
+        sans-serif;
+    font-weight: normal;
+    transition: transform 0.15s;
+    pointer-events: none;
+}
+
+.pieza.blanco {
+    color: #ffffff !important;
+    text-shadow:
+        2px 2px 2px #333,
+        -1px -1px 0 #777,
+        1px -1px 0 #777,
+        -1px 1px 0 #777,
+        1px 1px 0 #777,
+        0 0 5px rgba(0,0,0,.55);
+}
+
+.pieza.negro {
+    color: #111111 !important;
+    text-shadow:
+        2px 2px 2px rgba(255,255,255,.9),
+        -1px -1px 0 rgba(255,255,255,.55),
+        1px -1px 0 rgba(255,255,255,.55),
+        -1px 1px 0 rgba(255,255,255,.55),
+        1px 1px 0 rgba(255,255,255,.55);
+}
+
+.casilla:hover .pieza {
+    transform: scale(1.08);
+}
+
+.casilla.seleccionada {
+    box-shadow: inset 0 0 0 5px var(--amarillo);
+}
+
+.casilla.movimiento::after {
+    content: "";
+    position: absolute;
+    width: 24%;
+    height: 24%;
+    border-radius: 50%;
+    background: rgba(25, 90, 55, 0.75);
+    z-index: 2;
+}
+
+.casilla.captura::after {
+    content: "";
+    position: absolute;
+    inset: 8%;
+    border-radius: 50%;
+    border: 5px solid rgba(210, 35, 35, 0.8);
+    z-index: 2;
+}
+
+/* Rey en jaque */
+.casilla.rey-jaque {
+    animation: jaque 0.8s infinite alternate;
+    box-shadow:
+        inset 0 0 0 7px #ff2525,
+        inset 0 0 25px rgba(255, 0, 0, 0.7);
+}
+
+@keyframes jaque {
+    from { filter: brightness(1); }
+    to { filter: brightness(1.35); }
+}
+
+.controles {
+    margin-top: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.btn {
+    border: none;
+    padding: 14px 25px;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+.reiniciar {
+    background: var(--verde);
+    color: white;
+}
+
+.reiniciar:hover {
+    background: var(--verde-claro);
+    transform: translateY(-2px);
+}
+
+.mensaje {
+    min-height: 25px;
+    color: #d5e2db;
+    text-align: center;
+    font-weight: bold;
+}
+
+/* Cartel de final */
+.final-partida {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.78);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    animation: aparecer 0.3s ease;
+}
+
+.final-contenido {
+    width: min(90%, 450px);
+    padding: 40px 30px;
+    background: linear-gradient(145deg, #203c2d, #101c16);
+    border: 2px solid #5c9874;
+    border-radius: 25px;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0,0,0,.7);
+    animation: subir 0.4s ease;
+}
+
+.final-contenido .icono {
+    font-size: 5rem;
+    margin-bottom: 15px;
+}
+
+.final-contenido h2 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.final-contenido p {
+    color: #c8d5ce;
+    margin-bottom: 25px;
+    font-size: 1.1rem;
+}
+
+.final-contenido button {
+    border: none;
+    padding: 13px 25px;
+    border-radius: 12px;
+    background: #4f8f68;
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.final-contenido button:hover {
+    background: #65a77f;
+}
+
+@keyframes aparecer {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes subir {
+    from {
+        transform: translateY(30px) scale(.95);
+    }
+    to {
+        transform: translateY(0) scale(1);
+    }
+}
+
+.reglas {
+    margin-top: 50px;
+    padding: 30px;
+    background: var(--panel);
+    border-radius: 20px;
+    box-shadow: var(--sombra);
+}
+
+.reglas h2 {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.reglas-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.reglas-grid article {
+    padding: 20px;
+    text-align: center;
+    background: #203128;
+    border-radius: 15px;
+}
+
+.reglas-grid span {
+    display: block;
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.reglas-grid h3 {
+    margin-bottom: 8px;
+}
+
+.reglas-grid p {
+    color: #b7c4bd;
+    line-height: 1.5;
+}
+
+footer {
+    margin-top: 50px;
+    padding: 25px;
+    text-align: center;
+    background: #0a100d;
+    color: #89968f;
+}
+
+@media (max-width: 900px) {
+    .tablero {
+        width: 94vw;
+        border-width: 5px;
+    }
+
+    .jugador {
+        width: 94vw;
+    }
+}
+
+@media (max-width: 800px) {
+    .header h1 {
+        font-size: 2rem;
+    }
+
+    .informacion {
+        gap: 40px;
+    }
+
+    .reglas-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 500px) {
+    .contenedor {
+        width: 96%;
+        margin-top: 20px;
+    }
+
+    .panel {
+        padding: 18px;
+    }
+
+    .modo {
+        width: 100%;
+    }
+
+    .informacion {
+        gap: 20px;
+    }
+
+    .tablero {
+        width: 96vw;
+        border-width: 4px;
+    }
+
+    .casilla {
+        font-size: 11vw;
+    }
+
+    .jugador {
+        width: 96vw;
+    }
+
+    .reglas {
+        padding: 20px;
+    }
+
+    .reglas-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .final-contenido {
+        padding: 30px 20px;
+    }
+
+    .final-contenido h2 {
+        font-size: 1.6rem;
+    }
+}
